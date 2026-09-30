@@ -12,7 +12,13 @@ async function calculateRealAstrology(birthDetails) {
   try { result = await response.json(); } catch {}
 
   if (!response.ok) {
-    throw new Error(result.error || "Astrology calculation failed.");
+  const details = result.details
+    ? JSON.stringify(result.details)
+    : "";
+
+  throw new Error(
+    `${result.error || "Astrology calculation failed."} ${details}`
+  );
   }
 
   return result;
