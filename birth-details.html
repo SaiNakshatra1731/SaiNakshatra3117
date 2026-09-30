@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birth Details | Sai Nakshatra</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stars"></div>
+<header class="nav"><a class="brand" href="index.html">Sai <span>Nakshatra</span></a></header>
+<main class="page">
+  <div class="section-heading">
+    <p class="eyebrow">STEP 1 OF YOUR JOURNEY</p>
+    <h1>Birth Details ✨</h1>
+    <p>Enter your details carefully. They are used to prepare your personalized chart.</p>
+  </div>
+
+  <form id="birthForm" class="glass-card">
+    <label>Full Name<input id="name" type="text" autocomplete="name" placeholder="Enter your name" required></label>
+    <label>Date of Birth<input id="date" type="date" required></label>
+    <label>Time of Birth<input id="time" type="time" required></label>
+    <label>Place of Birth<input id="place" type="text" autocomplete="off" placeholder="City, Country" required></label>
+    <button class="primary-btn" type="submit" id="continueBtn">Continue ✨</button>
+    <div id="status" class="status"></div>
+    <p class="small-note">Please check your birth time and place before continuing.</p>
+  </form>
+</main>
+<script src="astro-engine.js"></script>
+<script>
+document.getElementById("birthForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const name = document.getElementById("name").value.trim();
+  const date = document.getElementById("date").value;
+  const time = document.getElementById("time").value;
+  const place = document.getElementById("place").value.trim();
+  const status = document.getElementById("status");
+  const button = document.getElementById("continueBtn");
+
+  if (!name || !date || !time || !place) return;
+
+  localStorage.setItem("birthName", name);
+  localStorage.setItem("birthDate", date);
+  localStorage.setItem("birthTime", time);
+  localStorage.setItem("birthPlace", place);
+
+  button.disabled = true;
+  button.textContent = "Preparing your chart…";
+  status.textContent = "Connecting to the astrology engine…";
+  status.className = "status loading";
+
+  try {
+    const result = await calculateRealAstrology({ name, date, time, place });
+    localStorage.setItem("astrologyResult", JSON.stringify(result));
+    window.location.href = "result.html";
+  } catch (error) {
+    console.error(error);
+    button.disabled = false;
+    button.textContent = "Continue ✨";
+    status.textContent = error.message || "We couldn't calculate your reading right now.";
+    status.className = "status error";
+  }
+});
+</script>
+</body>
+</html>

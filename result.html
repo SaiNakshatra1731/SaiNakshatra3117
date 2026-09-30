@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Reading | Sai Nakshatra</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stars"></div>
+<header class="nav"><a class="brand" href="index.html">Sai <span>Nakshatra</span></a></header>
+<main class="page">
+  <div class="section-heading">
+    <p class="eyebrow">YOUR SAI NAKSHATRA READING</p>
+    <h1 id="greeting">Your Reading ✨</h1>
+    <p id="intro">Your calculated information will appear here.</p>
+  </div>
+
+  <section class="result-grid">
+    <article class="result-card"><span>RASHI</span><strong id="rashi">—</strong></article>
+    <article class="result-card"><span>NAKSHATRA</span><strong id="nakshatra">—</strong></article>
+    <article class="result-card"><span>PADA</span><strong id="pada">—</strong></article>
+  </section>
+
+  <section class="glass-card">
+    <h2>Birth Information</h2>
+    <div id="birthInfo" class="info-list"></div>
+  </section>
+
+  <section class="glass-card">
+    <h2>Your next step</h2>
+    <p class="muted">This reading is a starting point for reflection and planning. More personalized sections can be added as the Sai Nakshatra system grows.</p>
+    <a class="secondary-btn" href="birth-details.html">Calculate Again</a>
+  </section>
+</main>
+<script>
+const name = localStorage.getItem("birthName") || "Explorer";
+const date = localStorage.getItem("birthDate") || "—";
+const time = localStorage.getItem("birthTime") || "—";
+const place = localStorage.getItem("birthPlace") || "—";
+const raw = localStorage.getItem("astrologyResult");
+
+document.getElementById("greeting").textContent = `${name}'s Reading ✨`;
+document.getElementById("birthInfo").innerHTML =
+  `<div><span>Date</span><b>${date}</b></div>
+   <div><span>Time</span><b>${time}</b></div>
+   <div><span>Place</span><b>${place}</b></div>`;
+
+if (raw) {
+  try {
+    const data = JSON.parse(raw);
+    const rashi = data.rashi?.name || data.rashi || data.output?.rashi?.name || "—";
+    const nak = data.nakshatra?.name || data.nakshatra || data.output?.nakshatra?.name || "—";
+    const pada = data.nakshatra?.pada || data.pada || data.output?.nakshatra?.pada || "—";
+    document.getElementById("rashi").textContent = rashi;
+    document.getElementById("nakshatra").textContent = nak;
+    document.getElementById("pada").textContent = pada;
+  } catch {}
+}
+</script>
+</body>
+</html>
